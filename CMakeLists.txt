@@ -3,4 +3,5 @@ project(Matrix_library)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Matrix_library main.cpp)
+add_executable(Matrix_library main.cpp
+        Matrix.h)
