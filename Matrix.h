@@ -17,6 +17,8 @@ public:
     using size_type = std::size_t;
     using pointer = T*;
     using reference = T&;
+    using const_pointer = const T*;
+    using const_reference = const T&;
 
     // Default constructor
     Matrix() noexcept = default;
@@ -58,22 +60,22 @@ public:
 
     // Raw access to contiguous storage
     pointer data() noexcept;
-    const pointer data() const noexcept;
+    const_pointer data() const noexcept;
 
     // Pointer to first element of row r
     pointer row_data(size_type r) noexcept;
-    const pointer row_data(size_type r) const noexcept;
+    const const_pointer row_data(size_type r) const noexcept;
 
     // Element access
     reference operator()(size_type r, size_type c);
-    const reference operator()(size_type r, size_type c) const;
+    const_reference operator()(size_type r, size_type c) const;
 
     // Checked access
     reference at(size_type r, size_type c);
-    const reference at(size_type r, size_type c) const;
+    const_reference at(size_type r, size_type c) const;
 
     // Modifiers
-    void fill(const T& value);
+    void fill(const_reference value);
 
     // Reset to 0x0 and release storage
     void clear() noexcept;
@@ -99,11 +101,11 @@ public:
 
     Matrix& operator+=(const Matrix& other);
     Matrix& operator-=(const Matrix& other);
-    Matrix& operator*=(const reference scalar);
+    Matrix& operator*=(const_reference scalar);
 
     // Scalar operations (non-members)
-    friend Matrix operator*(const Matrix& m, const reference scalar) noexcept;
-    friend Matrix operator*(const reference scalar, const Matrix& m) noexcept;
+    friend Matrix operator*(const Matrix& m, const_reference scalar) noexcept;
+    friend Matrix operator*(const_reference scalar, const Matrix& m) noexcept;
 
     // Comparisons
     [[nodiscard]] bool operator==(const Matrix& other) const noexcept;
@@ -112,10 +114,10 @@ public:
     // Iteration
     pointer begin() noexcept;
     pointer end() noexcept;
-    const pointer begin() const noexcept;
-    const pointer end() const noexcept;
-    const pointer cbegin() const noexcept;
-    const pointer cend() const noexcept;
+    const_pointer begin() const noexcept;
+    const_pointer end() const noexcept;
+    const_pointer cbegin() const noexcept;
+    const_pointer cend() const noexcept;
 
     // I/O
     template<typename U>
