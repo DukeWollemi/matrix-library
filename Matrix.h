@@ -104,8 +104,8 @@ public:
     Matrix& operator*=(const_reference scalar);
 
     // Scalar operations (non-members)
-    friend Matrix operator*(const Matrix& m, const_reference scalar) noexcept;
-    friend Matrix operator*(const_reference scalar, const Matrix& m) noexcept;
+    friend Matrix operator*(const Matrix& m, const_reference scalar);
+    friend Matrix operator*(const_reference scalar, const Matrix& m);
 
     // Comparisons
     [[nodiscard]] bool operator==(const Matrix& other) const noexcept;
