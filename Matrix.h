@@ -5,7 +5,7 @@
 #ifndef MATRIX_LIBRARY_MATRIX_H
 #define MATRIX_LIBRARY_MATRIX_H
 
-#include <iostream>
+#include <iosfwd>
 #include <initializer_list>
 #include <cstddef>
 #include <algorithm>
@@ -64,7 +64,7 @@ public:
 
     // Pointer to first element of row r
     pointer row_data(size_type r) noexcept;
-    const const_pointer row_data(size_type r) const noexcept;
+    const_pointer row_data(size_type r) const noexcept;
 
     // Element access
     reference operator()(size_type r, size_type c);
@@ -75,13 +75,10 @@ public:
     const_reference at(size_type r, size_type c) const;
 
     // Modifiers
-    void fill(const_reference value);
+    Matrix& fill(const_reference value);
 
     // Reset to 0x0 and release storage
     void clear() noexcept;
-
-    // Resize
-    void resize(size_type rows, size_type cols);
 
     // Swap row/column
     void swap_rows(size_type r1, size_type r2);
@@ -109,7 +106,7 @@ public:
 
     // Comparisons
     [[nodiscard]] bool operator==(const Matrix& other) const noexcept;
-    [[nodiscard]] bool operator!=(const Matrix& other) const;
+    [[nodiscard]] bool operator!=(const Matrix& other) const noexcept;
 
     // Iteration
     pointer begin() noexcept;
