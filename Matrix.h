@@ -21,11 +21,6 @@ public:
     using const_pointer = const T*;
     using const_reference = const T&;
 
-    using matrix_type = Matrix;
-	using matrix_reference = Matrix&;
-	using const_matrix_reference = const Matrix&;
-	using matrix_rvalue_reference = Matrix&&;
-
     // Default constructor
     Matrix() noexcept = default;
 
@@ -42,20 +37,20 @@ public:
     ~Matrix();
 
     // Copy constructor
-    Matrix(const_matrix_reference other);
+    Matrix(const Matrix& other);
 
     // Copy assignment
-    Matrix& operator=(const_matrix_reference other);
+    Matrix& operator=(const Matrix& other);
 
     // Move constructor
-    Matrix(matrix_rvalue_reference other) noexcept;
+    Matrix(Matrix&& other) noexcept;
 
     // Move assignment
-    Matrix& operator=(matrix_rvalue_reference other) noexcept;
+    Matrix& operator=(Matrix&& other) noexcept;
 
     // Swap utility
-    void swap(matrix_reference other) noexcept;
-    friend void swap(matrix_reference m1, matrix_reference m2) noexcept;
+    void swap(Matrix& other) noexcept;
+    friend void swap(Matrix& m1, Matrix& m2) noexcept;
 
     // Observers
     [[nodiscard]] size_type rows() const noexcept;
@@ -80,7 +75,7 @@ public:
     const_reference at(size_type r, size_type c) const;
 
     // Modifiers
-    Matrix& fill(const_reference value);
+    Matrix& fill(const Matrix& value);
 
     // Reset to 0x0 and release storage
     void clear() noexcept;
@@ -97,21 +92,21 @@ public:
 
     // Arithmetic operators
     // Dimensions must match; on mismatch throw error
-    [[nodiscard]] Matrix operator+(const_matrix_reference other) const;
-    [[nodiscard]] Matrix operator-(const_matrix_reference other) const;
-    [[nodiscard]] Matrix operator*(const_matrix_reference other) const;
+    [[nodiscard]] Matrix operator+(const Matrix& other) const;
+    [[nodiscard]] Matrix operator-(const Matrix& other) const;
+    [[nodiscard]] Matrix operator*(const Matrix& other) const;
 
-    Matrix& operator+=(const_matrix_reference other);
-    Matrix& operator-=(const_matrix_reference other);
-    Matrix& operator*=(const_reference scalar);
+    Matrix& operator+=(const Matrix& other);
+    Matrix& operator-=(const Matrix& other);
+    Matrix& operator*=(Matrix& scalar);
 
     // Scalar operations (non-members)
-    friend Matrix operator*(const_matrix_reference m, const_reference scalar);
-    friend Matrix operator*(const_reference scalar, const_matrix_reference m);
+    friend Matrix operator*(const Matrix& m, const Matrix& scalar);
+    friend Matrix operator*(const Matrix& scalar, const Matrix& m);
 
     // Comparisons
-    [[nodiscard]] bool operator==(const_matrix_reference other) const noexcept;
-    [[nodiscard]] bool operator!=(const_matrix_reference other) const noexcept;
+    [[nodiscard]] bool operator==(const Matrix& other) const noexcept;
+    [[nodiscard]] bool operator!=(const Matrix& other) const noexcept;
 
     // Iteration
     pointer begin() noexcept;
