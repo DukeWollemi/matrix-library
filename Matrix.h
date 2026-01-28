@@ -50,7 +50,7 @@ public:
     // Swap utility
     void swap(Matrix& other) noexcept;
 
-    friend void swap(Matrix& m1, Matrix& m2) noexcept { m1.swap(m2); }
+    friend void swap(Matrix& m1, Matrix& m2) noexcept;
 
     // Observers
     [[nodiscard]] size_type rows() const noexcept;
