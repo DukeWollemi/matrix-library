@@ -25,10 +25,10 @@ public:
     Matrix() noexcept = default;
 
     // Constructor with size
-    explicit Matrix(size_type rows, size_type cols);
+    Matrix(size_type rows, size_type cols);
 
     // Matrix with value
-    Matrix(size_type rows, size_type cols, const_reference value);
+    Matrix(size_type rows, size_type cols, const Matrix& value);
 
     // Matrix with an Initializer list
     Matrix(std::initializer_list<std::initializer_list<T>> init);
@@ -40,7 +40,7 @@ public:
     Matrix(const Matrix& other);
 
     // Copy assignment
-    Matrix& operator=(const Matrix& other);
+    Matrix& operator=(Matrix other);
 
     // Move constructor
     Matrix(Matrix&& other) noexcept;
@@ -50,7 +50,7 @@ public:
 
     // Swap utility
     void swap(Matrix& other) noexcept;
-    friend void swap(Matrix& m1, Matrix& m2) noexcept;
+    friend void swap(Matrix& m1, Matrix& m2) noexcept { m1.swap(m2); }
 
     // Observers
     [[nodiscard]] size_type rows() const noexcept;
