@@ -9,6 +9,7 @@
 #include <initializer_list>
 #include <cstddef>
 #include <algorithm>
+#include <ostream>
 #include <stdexcept>
 
 template<typename T>
@@ -118,7 +119,23 @@ public:
 
     // I/O
     template<typename U>
-    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m);
+    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m) {
+        size_type rows { m.rows() };
+        size_type cols { m.cols() };
+
+        if (rows == 0 || cols == 0)
+            return os;
+
+        Matrix<T> tmp{ rows, cols };
+
+        for (size_type r { 0 }; r < rows; ++r) {
+            for (size_type c { 0 }; c < cols; ++c) {
+
+            }
+        }
+
+        return os;
+    }
 
     template <typename U>
     friend std::istream& operator>>(std::istream& is, Matrix<U>& m);
