@@ -20,6 +20,11 @@ public:
     using const_pointer = const T*;
     using const_reference = const T&;
 
+    using matrix_type = Matrix;
+	using matrix_reference = Matrix&;
+	using const_matrix_reference = const Matrix&;
+	using matrix_rvalue_reference = Matrix&&;
+
     // Default constructor
     Matrix() noexcept = default;
 
@@ -90,7 +95,7 @@ public:
     void transpose_in_place();
     [[nodiscard]] Matrix transposed() const;
 
-    // Arthimetic operators
+    // Arithmetic operators
     // Dimensions must match; on mismatch throw error
     [[nodiscard]] Matrix operator+(const Matrix& other) const;
     [[nodiscard]] Matrix operator-(const Matrix& other) const;
@@ -126,9 +131,9 @@ public:
 private:
     [[nodiscard]] size_type index(size_type r, size_type c) const noexcept;
 
-    size_type m_rows{0};
-    size_type m_cols{0};
-    T* m_data{nullptr};
+    size_type m_rows{ 0 };
+    size_type m_cols{ 0 };
+    pointer m_data{ nullptr };
 };
 
 #endif //MATRIX_LIBRARY_MATRIX_H
