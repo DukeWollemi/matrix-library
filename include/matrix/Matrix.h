@@ -120,17 +120,12 @@ public:
     // I/O
     template<typename U>
     friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m) {
-        size_type rows { m.rows() };
-        size_type cols { m.cols() };
+        os << m.rows() << ' ' << m.cols();
 
-        if (rows == 0 || cols == 0)
-            return os;
-
-        Matrix<T> tmp{ rows, cols };
-
-        for (size_type r { 0 }; r < rows; ++r) {
-            for (size_type c { 0 }; c < cols; ++c) {
-
+        for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
+            os << '\n';
+            for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
+                os << m(r, c);
             }
         }
 
@@ -138,7 +133,9 @@ public:
     }
 
     template <typename U>
-    friend std::istream& operator>>(std::istream& is, Matrix<U>& m);
+    friend std::istream& operator>>(std::istream& is, Matrix<U>& m) {
+        return is;
+    }
 
 private:
     [[nodiscard]] size_type index(size_type r, size_type c) const noexcept;
