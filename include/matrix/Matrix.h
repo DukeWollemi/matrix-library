@@ -5,10 +5,12 @@
 #ifndef MATRIX_LIBRARY_MATRIX_H
 #define MATRIX_LIBRARY_MATRIX_H
 
-#include <iostream>
+#include <iosfwd>
 #include <initializer_list>
 #include <cstddef>
 #include <algorithm>
+#include <ostream>
+#include <stdexcept>
 
 template<typename T>
 class Matrix {
@@ -17,15 +19,17 @@ public:
     using size_type = std::size_t;
     using pointer = T*;
     using reference = T&;
+    using const_pointer = const T*;
+    using const_reference = const T&;
 
     // Default constructor
     Matrix() noexcept = default;
 
     // Constructor with size
-    explicit Matrix(size_type rows, size_type cols);
+    Matrix(size_type rows, size_type cols);
 
     // Matrix with value
-    Matrix(size_type rows, size_type cols, const T& value);
+    Matrix(size_type rows, size_type cols, const Matrix& value);
 
     // Matrix with an Initializer list
     Matrix(std::initializer_list<std::initializer_list<T>> init);
@@ -37,7 +41,7 @@ public:
     Matrix(const Matrix& other);
 
     // Copy assignment
-    Matrix& operator=(const Matrix& other);
+    Matrix& operator=(Matrix other);
 
     // Move constructor
     Matrix(Matrix&& other) noexcept;
@@ -47,7 +51,6 @@ public:
 
     // Swap utility
     void swap(Matrix& other) noexcept;
-
     friend void swap(Matrix& m1, Matrix& m2) noexcept { m1.swap(m2); }
 
     // Observers
@@ -58,28 +61,25 @@ public:
 
     // Raw access to contiguous storage
     pointer data() noexcept;
-    const pointer data() const noexcept;
+    const_pointer data() const noexcept;
 
     // Pointer to first element of row r
     pointer row_data(size_type r) noexcept;
-    const pointer row_data(size_type r) const noexcept;
+    const_pointer row_data(size_type r) const noexcept;
 
     // Element access
     reference operator()(size_type r, size_type c);
-    const reference operator()(size_type r, size_type c) const;
+    const_reference operator()(size_type r, size_type c) const;
 
     // Checked access
     reference at(size_type r, size_type c);
-    const reference at(size_type r, size_type c) const;
+    const_reference at(size_type r, size_type c) const;
 
     // Modifiers
-    void fill(const T& value);
+    Matrix& fill(const Matrix& value);
 
     // Reset to 0x0 and release storage
     void clear() noexcept;
-
-    // Resize
-    void resize(size_type rows, size_type cols);
 
     // Swap row/column
     void swap_rows(size_type r1, size_type r2);
@@ -91,7 +91,7 @@ public:
     void transpose_in_place();
     [[nodiscard]] Matrix transposed() const;
 
-    // Arthimetic operators
+    // Arithmetic operators
     // Dimensions must match; on mismatch throw error
     [[nodiscard]] Matrix operator+(const Matrix& other) const;
     [[nodiscard]] Matrix operator-(const Matrix& other) const;
@@ -99,27 +99,43 @@ public:
 
     Matrix& operator+=(const Matrix& other);
     Matrix& operator-=(const Matrix& other);
-    Matrix& operator*=(const reference scalar);
+    Matrix& operator*=(Matrix& scalar);
 
     // Scalar operations (non-members)
-    friend Matrix operator*(const Matrix& m, const reference scalar) noexcept;
-    friend Matrix operator*(const reference scalar, const Matrix& m) noexcept;
+    friend Matrix operator*(const Matrix& m, const Matrix& scalar);
+    friend Matrix operator*(const Matrix& scalar, const Matrix& m);
 
     // Comparisons
     [[nodiscard]] bool operator==(const Matrix& other) const noexcept;
-    [[nodiscard]] bool operator!=(const Matrix& other) const;
+    [[nodiscard]] bool operator!=(const Matrix& other) const noexcept;
 
     // Iteration
     pointer begin() noexcept;
     pointer end() noexcept;
-    const pointer begin() const noexcept;
-    const pointer end() const noexcept;
-    const pointer cbegin() const noexcept;
-    const pointer cend() const noexcept;
+    const_pointer begin() const noexcept;
+    const_pointer end() const noexcept;
+    const_pointer cbegin() const noexcept;
+    const_pointer cend() const noexcept;
 
     // I/O
     template<typename U>
-    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m);
+    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m) {
+        size_type rows { m.rows() };
+        size_type cols { m.cols() };
+
+        if (rows == 0 || cols == 0)
+            return os;
+
+        Matrix<T> tmp{ rows, cols };
+
+        for (size_type r { 0 }; r < rows; ++r) {
+            for (size_type c { 0 }; c < cols; ++c) {
+
+            }
+        }
+
+        return os;
+    }
 
     template <typename U>
     friend std::istream& operator>>(std::istream& is, Matrix<U>& m);
@@ -127,9 +143,9 @@ public:
 private:
     [[nodiscard]] size_type index(size_type r, size_type c) const noexcept;
 
-    size_type m_rows{0};
-    size_type m_cols{0};
-    T* m_data{nullptr};
+    size_type m_rows{ 0 };
+    size_type m_cols{ 0 };
+    pointer m_data{ nullptr };
 };
 
 #endif //MATRIX_LIBRARY_MATRIX_H
