@@ -126,6 +126,7 @@ public:
             os << '\n';
             for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
                 os << m(r, c);
+                if (c + 1 < m.cols()) os << ' ';
             }
         }
 
@@ -134,6 +135,22 @@ public:
 
     template <typename U>
     friend std::istream& operator>>(std::istream& is, Matrix<U>& m) {
+        typename Matrix<U>::size_type r{ 0 };
+        typename Matrix<U>::size_type c{ 0 };
+
+        if (!(is >> r >> c))
+            return is;
+
+        Matrix<U> temp(r, c);
+        for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
+            for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
+                if (!(is >> m(r, c)))
+                    return is;
+            }
+        }
+
+        m.swap(temp);
+
         return is;
     }
 
