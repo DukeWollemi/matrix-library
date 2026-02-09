@@ -10,8 +10,6 @@ target_include_directories(Matrix INTERFACE
         $<INSTALL_INTERFACE:include>
 )
 
-# Build examples
-add_subdirectory(examples)
 
 # Build tests
 option(BUILD_TESTS "Build tests" ON)
