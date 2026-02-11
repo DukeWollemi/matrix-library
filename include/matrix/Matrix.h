@@ -163,3 +163,15 @@ private:
 };
 
 #endif //MATRIX_LIBRARY_MATRIX_H
+
+template<typename T>
+inline Matrix<T>::Matrix(size_type rows, size_type cols)
+	: m_rows{rows}, m_cols{cols}, m_data{nullptr}
+{
+}
+
+template<typename T>
+inline Matrix<T>::~Matrix()
+{
+    delete[] m_data;
+}
