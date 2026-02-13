@@ -29,7 +29,7 @@ public:
     Matrix(size_type rows, size_type cols);
 
     // Matrix with value
-    Matrix(size_type rows, size_type cols, const Matrix& value);
+    Matrix(size_type rows, size_type cols, const T& value);
 
     // Matrix with an Initializer list
     Matrix(std::initializer_list<std::initializer_list<T>> init);
@@ -165,13 +165,74 @@ private:
 #endif //MATRIX_LIBRARY_MATRIX_H
 
 template<typename T>
-inline Matrix<T>::Matrix(size_type rows, size_type cols)
-	: m_rows{rows}, m_cols{cols}, m_data{nullptr}
+Matrix<T>::Matrix(size_type rows, size_type cols)
+	: m_rows{rows}, m_cols{cols}, m_data{new T[m_rows * m_cols]}
 {
 }
 
 template<typename T>
-inline Matrix<T>::~Matrix()
+Matrix<T>::Matrix(size_type rows, size_type cols, const T &value)
+    : m_rows{rows}, m_cols{cols}, m_data{new T[m_rows * cols]}
+{
+    std::fill(m_data, m_data + size(), value);
+}
+
+template<typename T>
+Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> init)
+    : m_rows{init.size()},
+    m_cols{init.size() ? init.begin()->size() : 0},
+    m_data{new T[init.size() * (init.size() ? init.begin()->size() : 0)]}
+{
+    size_type r { 0 };
+    for (const auto &row : init) {
+        std::copy(row.begin(), row.end(), m_data + r * m_cols);
+        ++r;
+    }
+}
+
+template<typename T>
+Matrix<T>::~Matrix()
 {
     delete[] m_data;
 }
+
+template<typename T>
+Matrix<T>::Matrix(const Matrix &other)
+    : m_rows{other.m_rows}, m_cols{other.m_cols}, m_data{other.m_data}
+{
+    std::copy(other.m_data, other.m_data + size(), m_data);
+}
+
+template<typename T>
+Matrix<T> & Matrix<T>::operator=(Matrix other) {
+    swap(other);
+    return *this;
+}
+
+template<typename T>
+Matrix<T>::Matrix(Matrix &&other) noexcept
+    : m_rows{other.m_rows}, m_cols{other.m_cols}, m_data{other.m_data}
+{
+    other.m_rows = 0;
+    other.m_cols = 0;
+    other.m_data = nullptr;
+}
+
+template<typename T>
+Matrix<T> & Matrix<T>::operator=(Matrix &&other) noexcept {
+    if (this != &other) {
+        delete[] m_data;
+
+        m_rows = other.m_rows;
+        m_cols = other.m_cols;
+        m_data = other.m_data;
+
+        other.m_rows = 0;
+        other.m_cols = 0;
+        other.m_data = nullptr;
+    }
+    return *this;
+}
+
+
+
