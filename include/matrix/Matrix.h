@@ -144,7 +144,7 @@ public:
         Matrix<U> temp(r, c);
         for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
             for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
-                if (!(is >> m(r, c)))
+                if (!(is >> temp(r, c)))
                     return is;
             }
         }
@@ -198,7 +198,7 @@ Matrix<T>::~Matrix()
 
 template<typename T>
 Matrix<T>::Matrix(const Matrix &other)
-    : m_rows{other.m_rows}, m_cols{other.m_cols}, m_data{other.m_data}
+    : m_rows{other.m_rows}, m_cols{other.m_cols}, m_data{new T[other.m_rows * other.m_cols]}
 {
     std::copy(other.m_data, other.m_data + size(), m_data);
 }
