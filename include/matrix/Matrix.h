@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <ostream>
+#include <istream>
 #include <stdexcept>
 
 template<typename T>
@@ -41,7 +42,7 @@ public:
     Matrix(const Matrix& other);
 
     // Copy assignment
-    Matrix& operator=(Matrix other);
+    Matrix& operator=(const Matrix& other);
 
     // Move constructor
     Matrix(Matrix&& other) noexcept;
@@ -117,42 +118,12 @@ public:
     const_pointer cbegin() const noexcept;
     const_pointer cend() const noexcept;
 
-    // I/O
+    // I/O — only declared here; defined below as free templates
     template<typename U>
-    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m) {
-        os << m.rows() << ' ' << m.cols();
-
-        for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
-            os << '\n';
-            for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
-                os << m(r, c);
-                if (c + 1 < m.cols()) os << ' ';
-            }
-        }
-
-        return os;
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& m);
 
     template <typename U>
-    friend std::istream& operator>>(std::istream& is, Matrix<U>& m) {
-        typename Matrix<U>::size_type r{ 0 };
-        typename Matrix<U>::size_type c{ 0 };
-
-        if (!(is >> r >> c))
-            return is;
-
-        Matrix<U> temp(r, c);
-        for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
-            for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
-                if (!(is >> temp(r, c)))
-                    return is;
-            }
-        }
-
-        m.swap(temp);
-
-        return is;
-    }
+    friend std::istream& operator>>(std::istream& is, Matrix<U>& m);
 
 private:
     [[nodiscard]] size_type index(size_type r, size_type c) const noexcept;
@@ -163,6 +134,8 @@ private:
 };
 
 #endif //MATRIX_LIBRARY_MATRIX_H
+
+// Constructor / destructor implementations
 
 template<typename T>
 Matrix<T>::Matrix(size_type rows, size_type cols)
@@ -204,8 +177,11 @@ Matrix<T>::Matrix(const Matrix &other)
 }
 
 template<typename T>
-Matrix<T> & Matrix<T>::operator=(Matrix other) {
-    swap(other);
+Matrix<T>& Matrix<T>::operator=(const Matrix& other) {
+    if (this != &other) {
+        Matrix temp{other};
+        swap(temp);
+    }
     return *this;
 }
 
@@ -219,7 +195,7 @@ Matrix<T>::Matrix(Matrix &&other) noexcept
 }
 
 template<typename T>
-Matrix<T> & Matrix<T>::operator=(Matrix &&other) noexcept {
+Matrix<T>& Matrix<T>::operator=(Matrix &&other) noexcept {
     if (this != &other) {
         delete[] m_data;
 
@@ -234,5 +210,39 @@ Matrix<T> & Matrix<T>::operator=(Matrix &&other) noexcept {
     return *this;
 }
 
+// I/O
 
+template<typename U>
+std::ostream& operator<<(std::ostream& os, const Matrix<U>& m) {
+    os << m.rows() << ' ' << m.cols();
+    for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
+        os << '\n';
+        for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
+            os << m(r, c);
+            if (c + 1 < m.cols()) os << ' ';
+        }
+    }
+    return os;
+}
 
+template <typename U>
+std::istream& operator>>(std::istream& is, Matrix<U>& m) {
+    typename Matrix<U>::size_type r{ 0 };
+    typename Matrix<U>::size_type c{ 0 };
+
+    if (!(is >> r >> c))
+        return is;
+
+    Matrix<U> temp(r, c);
+    for (typename Matrix<U>::size_type i { 0 }; i < r; ++i) {
+        for (typename Matrix<U>::size_type j { 0 }; j < c; ++j) {
+            if (!(is >> temp(i, j)))
+                return is;
+        }
+    }
+
+    //m.swap(temp);
+    std::swap(m, temp);
+
+    return is;
+}
