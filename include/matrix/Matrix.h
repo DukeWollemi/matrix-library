@@ -147,20 +147,16 @@ template<typename T>
 Matrix<T>::Matrix(size_type rows, size_type cols, const T &value)
     : m_rows{rows}, m_cols{cols}, m_data{new T[m_rows * cols]}
 {
-    std::fill(m_data, m_data + size(), value);
+
 }
 
 template<typename T>
 Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> init)
-    : m_rows{init.size()},
-    m_cols{init.size() ? init.begin()->size() : 0},
-    m_data{new T[init.size() * (init.size() ? init.begin()->size() : 0)]}
+    : m_rows{},
+    m_cols{},
+    m_data{}
 {
-    size_type r { 0 };
-    for (const auto &row : init) {
-        std::copy(row.begin(), row.end(), m_data + r * m_cols);
-        ++r;
-    }
+   
 }
 
 template<typename T>
@@ -173,15 +169,12 @@ template<typename T>
 Matrix<T>::Matrix(const Matrix &other)
     : m_rows{other.m_rows}, m_cols{other.m_cols}, m_data{new T[other.m_rows * other.m_cols]}
 {
-    std::copy(other.m_data, other.m_data + size(), m_data);
+
 }
 
 template<typename T>
 Matrix<T>& Matrix<T>::operator=(const Matrix& other) {
-    if (this != &other) {
-        Matrix temp{other};
-        swap(temp);
-    }
+    
     return *this;
 }
 
@@ -218,7 +211,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& m) {
     for (typename Matrix<U>::size_type r { 0 }; r < m.rows(); ++r) {
         os << '\n';
         for (typename Matrix<U>::size_type c { 0 }; c < m.cols(); ++c) {
-            os << m(r, c);
+            os << m{r, c};
             if (c + 1 < m.cols()) os << ' ';
         }
     }
@@ -236,7 +229,7 @@ std::istream& operator>>(std::istream& is, Matrix<U>& m) {
     Matrix<U> temp(r, c);
     for (typename Matrix<U>::size_type i { 0 }; i < r; ++i) {
         for (typename Matrix<U>::size_type j { 0 }; j < c; ++j) {
-            if (!(is >> temp(i, j)))
+            if (!(is >> temp{i, j}))
                 return is;
         }
     }
