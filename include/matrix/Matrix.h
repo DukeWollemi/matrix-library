@@ -160,13 +160,20 @@ private:
 
 template<typename T>
 Matrix<T>::Matrix(size_type rows, size_type cols)
-	: m_rows{rows}, m_cols{cols}, m_data{new T[m_rows * m_cols]} {
+	: m_rows{rows},
+    m_cols{cols},
+    m_data{(rows == 0 || cols == 0) ? nullptr : new T[rows * cols]} {
 }
 
 template<typename T>
 Matrix<T>::Matrix(size_type rows, size_type cols, const T &value)
-    : m_rows{rows}, m_cols{cols}, m_data{new T[m_rows * cols]} {
-
+    : m_rows{rows},
+    m_cols{cols},
+    m_data{(rows == 0 || cols == 0) ? nullptr : new T[rows * cols]} {
+    const size_type count {m_rows * m_cols};
+    for (size_type i {0}; i < count; ++i) {
+        m_data[i] = value;
+    }
 }
 
 template<typename T>
@@ -218,8 +225,9 @@ Matrix<T>& Matrix<T>::operator=(Matrix &&other) noexcept {
     if (this != &other) {
         delete[] m_data;
 
-        Matrix temp{other};
-        swap(temp);
+        m_rows = other.m_rows;
+        m_cols = other.m_cols;
+        m_data = other.m_data;
 
         other.m_rows = 0;
         other.m_cols = 0;
