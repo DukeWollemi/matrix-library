@@ -171,9 +171,7 @@ Matrix<T>::Matrix(size_type rows, size_type cols, const T &value)
 
 template<typename T>
 Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> init)
-    : m_rows{},
-    m_cols{},
-    m_data{} {
+    : m_rows{}, m_cols{}, m_data{} {
    
 }
 
@@ -183,10 +181,8 @@ Matrix<T>::~Matrix() {
 }
 
 template<typename T>
-Matrix<T>::Matrix(const Matrix &other) {
-    m_rows = other.m_rows;
-    m_cols = other.m_cols;
-    m_data = nullptr;
+Matrix<T>::Matrix(const Matrix &other)
+    : m_rows{ other.m_rows }, m_cols{ other.m_cols }, m_data{ nullptr } {
 
     const size_type count{m_rows * m_cols};
 
@@ -222,9 +218,8 @@ Matrix<T>& Matrix<T>::operator=(Matrix &&other) noexcept {
     if (this != &other) {
         delete[] m_data;
 
-        m_rows = other.m_rows;
-        m_cols = other.m_cols;
-        m_data = other.m_data;
+        Matrix temp{other};
+        swap(temp);
 
         other.m_rows = 0;
         other.m_cols = 0;
