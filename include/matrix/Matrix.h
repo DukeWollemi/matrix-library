@@ -85,7 +85,7 @@ public:
     const_reference at(size_type r, size_type c) const;
 
     // Modifiers
-    Matrix &fill(const Matrix &value);
+    Matrix &fill(const_reference value);
 
     // Reset to 0x0 and release storage
     void clear() noexcept;
@@ -178,8 +178,29 @@ Matrix<T>::Matrix(size_type rows, size_type cols, const T &value)
 
 template<typename T>
 Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> init)
-    : m_rows{}, m_cols{}, m_data{} {
-   
+    : m_rows{init.size()},
+    m_cols{(m_rows > 0) ? init.begin()->size() : 0},
+    m_data{ nullptr } {
+    const size_type count{m_rows * m_cols};
+
+    for (const auto& row : init) {
+        if (row.size() != m_cols) {
+            throw std::invalid_argument("All rows must have the same number of columns");
+        }
+    }
+
+    if (count == 0) {
+        return;
+    }
+
+    m_data = new T[count];
+
+    size_type destination{0};
+    for (const auto& row : init) {
+        for (const auto& value : row) {
+            m_data[destination++] = value;
+        }
+    }
 }
 
 template<typename T>
