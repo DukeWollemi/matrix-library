@@ -264,3 +264,47 @@ void Matrix<T>::swap(Matrix &other) noexcept {
     std::swap(m_data, other.m_data);
 }
 
+template<typename T>
+typename Matrix<T>::size_type Matrix<T>::rows() const noexcept {
+    return m_rows;
+}
+
+template<typename T>
+typename Matrix<T>::size_type Matrix<T>::cols() const noexcept {
+    return m_cols;
+}
+
+template<typename T>
+typename Matrix<T>::size_type Matrix<T>::size() const noexcept {
+    return m_rows * m_cols;
+}
+
+template<typename T>
+bool Matrix<T>::empty() const noexcept {
+    return size() == 0;
+}
+
+template<typename T>
+typename Matrix<T>::pointer Matrix<T>::data() noexcept {
+    return m_data;
+}
+
+template<typename T>
+typename Matrix<T>::const_pointer Matrix<T>::data() const noexcept {
+    return m_data;
+}
+
+template<typename T>
+typename Matrix<T>::reference Matrix<T>::operator()(size_type r, size_type c) {
+
+}
+
+template<typename T>
+typename Matrix<T>::const_reference Matrix<T>::operator()(size_type r, size_type c) const {
+
+}
+
+template<typename T>
+typename Matrix<T>::size_type Matrix<T>::index(size_type r, size_type c) const noexcept {
+}
+
