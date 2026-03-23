@@ -281,7 +281,7 @@ typename Matrix<T>::size_type Matrix<T>::size() const noexcept {
 
 template<typename T>
 bool Matrix<T>::empty() const noexcept {
-    return size() == 0;
+    return size() == 0 || m_data == nullptr;
 }
 
 template<typename T>
@@ -296,15 +296,16 @@ typename Matrix<T>::const_pointer Matrix<T>::data() const noexcept {
 
 template<typename T>
 typename Matrix<T>::reference Matrix<T>::operator()(size_type r, size_type c) {
-
+    return m_data[index(r, c)];
 }
 
 template<typename T>
 typename Matrix<T>::const_reference Matrix<T>::operator()(size_type r, size_type c) const {
-
+    return m_data[index(r, c)];
 }
 
 template<typename T>
 typename Matrix<T>::size_type Matrix<T>::index(size_type r, size_type c) const noexcept {
+    return r * m_cols + c;
 }
 
