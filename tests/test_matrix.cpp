@@ -7,20 +7,13 @@
 
 // Default constructor
 
-// A test smoke to make sure a Matrix can be contructed
-TEST(MatrixContruct, CanBeConstructed) {
-    //This test passes if the constructor and destructor can be called without crashing or throwing an unhandled exception.
-    Matrix<int> matrix{ 2, 6 };
-    
-	// Testing with empty init list.
-	Matrix<double> d_matrix{};
+TEST(MatrixDefaultConstructor, CreatesEmptyMatrix) {
+    Matrix<int> matrix;
 
-    // Testing default constructor
-    Matrix<int> def_matrix;
-
-    // Testing matrix with value
-    Matrix<int> value_matrix{ 4, 5, 9 };
-
-    SUCCEED(); // Explicitly mark the test as successful.
+    EXPECT_EQ(matrix.rows(), 0);
+    EXPECT_EQ(matrix.cols(), 0);
+    EXPECT_EQ(matrix.size(), 0);
+    EXPECT_TRUE(matrix.empty());
+    EXPECT_EQ(matrix.data(), nullptr);
 }
 
