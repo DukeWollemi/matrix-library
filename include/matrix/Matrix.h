@@ -281,7 +281,7 @@ typename Matrix<T>::size_type Matrix<T>::size() const noexcept {
 
 template<typename T>
 bool Matrix<T>::empty() const noexcept {
-    return size() == 0 || m_data == nullptr;
+    return size() == 0;
 }
 
 template<typename T>
