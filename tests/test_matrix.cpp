@@ -17,3 +17,16 @@ TEST(MatrixDefaultConstructor, CreatesEmptyMatrix) {
     EXPECT_EQ(matrix.data(), nullptr);
 }
 
+TEST(MatrixSizeConstructor, TestNormalAndZero) {
+    Matrix<int> matrix(2,3);
+    EXPECT_EQ(matrix.rows(), 2);
+    EXPECT_EQ(matrix.cols(), 3);
+    EXPECT_EQ(matrix.size(), 6);
+    EXPECT_TRUE(matrix.empty());
+    EXPECT_NE(matrix.data(), nullptr);
+
+    Matrix<int> matrix2(0, 3);
+    EXPECT_EQ(matrix2.size(), 0);
+    EXPECT_TRUE(matrix2.empty());
+    EXPECT_NE(matrix2.data(), nullptr);
+}
