@@ -22,7 +22,7 @@ TEST(MatrixSizeConstructor, TestNormalAndZero) {
     EXPECT_EQ(matrix.rows(), 2);
     EXPECT_EQ(matrix.cols(), 3);
     EXPECT_EQ(matrix.size(), 6);
-    EXPECT_TRUE(matrix.empty());
+    EXPECT_FALSE(matrix.empty());
     EXPECT_NE(matrix.data(), nullptr);
 
     Matrix<int> matrix2(0, 3);
