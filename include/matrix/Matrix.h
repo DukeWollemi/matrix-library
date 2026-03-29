@@ -70,19 +70,19 @@ public:
     const_pointer data() const noexcept;
 
     // Pointer to first element of row r
-    pointer row_data(size_type r) noexcept;
+    pointer row_data(size_type rows) noexcept;
 
-    const_pointer row_data(size_type r) const noexcept;
+    const_pointer row_data(size_type rows) const noexcept;
 
     // Element access
-    reference operator()(size_type r, size_type c);
+    reference operator()(size_type rows, size_type cols);
 
-    const_reference operator()(size_type r, size_type c) const;
+    const_reference operator()(size_type rows, size_type cols) const;
 
     // Checked access
-    reference at(size_type r, size_type c);
+    reference at(size_type rows, size_type cols);
 
-    const_reference at(size_type r, size_type c) const;
+    const_reference at(size_type rows, size_type cols) const;
 
     // Modifiers
     Matrix &fill(const_reference value);
@@ -295,13 +295,13 @@ typename Matrix<T>::const_pointer Matrix<T>::data() const noexcept {
 }
 
 template<typename T>
-typename Matrix<T>::reference Matrix<T>::operator()(size_type r, size_type c) {
-    return m_data[index(r, c)];
+typename Matrix<T>::reference Matrix<T>::operator()(size_type rows, size_type c) {
+    return m_data[index(rows, c)];
 }
 
 template<typename T>
-typename Matrix<T>::const_reference Matrix<T>::operator()(size_type r, size_type c) const {
-    return m_data[index(r, c)];
+typename Matrix<T>::const_reference Matrix<T>::operator()(size_type r, size_type cols) const {
+    return m_data[index(r, cols)];
 }
 
 template<typename T>
