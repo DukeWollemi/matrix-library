@@ -44,3 +44,16 @@ TEST(MatrixSizeConstructor, ZeroSizedMatrixHasNoStorage) {
     EXPECT_TRUE(matrix2.empty());
     EXPECT_EQ(matrix2.data(), nullptr);
 }
+
+TEST(MatrixValueConstructor, FillsAllElementsWithGivenValue) {
+    Matrix<int> matrix(2,3,7);
+
+    EXPECT_EQ(matrix.rows(), 2);
+    EXPECT_EQ(matrix.cols(), 3);
+    EXPECT_EQ(matrix.size(), 6);
+    EXPECT_FALSE(matrix.empty());
+    EXPECT_NE(matrix.data(), nullptr);
+
+    EXPECT_EQ(matrix(0,0), 7);
+    EXPECT_EQ(matrix(1, 0), 7);
+}
