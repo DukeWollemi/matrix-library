@@ -35,4 +35,12 @@ TEST(MatrixSizeConstructor, ZeroSizedMatrixHasNoStorage) {
     EXPECT_EQ(matrix.size(), 0);
     EXPECT_TRUE(matrix.empty());
     EXPECT_EQ(matrix.data(), nullptr);
+
+    Matrix<int> matrix2(3,0);
+
+    EXPECT_EQ(matrix2.rows(), 3);
+    EXPECT_EQ(matrix2.cols(), 0);
+    EXPECT_EQ(matrix2.size(), 0);
+    EXPECT_TRUE(matrix2.empty());
+    EXPECT_EQ(matrix2.data(), nullptr);
 }
