@@ -57,3 +57,13 @@ TEST(MatrixValueConstructor, FillsAllElementsWithGivenValue) {
     EXPECT_EQ(matrix(0,0), 7);
     EXPECT_EQ(matrix(1, 0), 7);
 }
+
+TEST(TestInitListConstructor, CreatesValidInitConstructorWithShapeAndElements) {
+    Matrix<int> matrix {{1, 2, 3}, {4,5,6}};
+
+    EXPECT_EQ(matrix.rows(), 2);
+    EXPECT_EQ(matrix.cols(), 3);
+
+    EXPECT_EQ(matrix(0,0), 1);
+    EXPECT_EQ(matrix(1, 2), 5);
+}
