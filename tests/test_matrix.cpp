@@ -65,5 +65,5 @@ TEST(TestInitListConstructor, CreatesValidInitConstructorWithShapeAndElements) {
     EXPECT_EQ(matrix.cols(), 3);
 
     EXPECT_EQ(matrix(0,0), 1);
-    EXPECT_EQ(matrix(1, 2), 5);
+    EXPECT_EQ(matrix(1, 1), 5);
 }
