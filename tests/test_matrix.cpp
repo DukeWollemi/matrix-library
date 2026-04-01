@@ -94,5 +94,16 @@ TEST(MatrixCopyAssignment, AssignmentOperatorUpdatesExistingObject)
 
 	copy = original;
 
-    EXPECT_EQ(copy.data(), original.data());
+    EXPECT_EQ(copy.rows(), original.rows());
+    EXPECT_EQ(copy.cols(), original.cols());
+    EXPECT_EQ(copy.size(), original.size());
+
+    EXPECT_EQ(copy(0, 0), 1);
+    EXPECT_EQ(copy(1, 0), 3);
+
+    EXPECT_NE(copy.data(), original.data());
+
+	copy(0, 0) = 99;
+    EXPECT_EQ(copy(0, 0), 99);
+	EXPECT_EQ(original(0, 0), 1);
 }
