@@ -2,6 +2,7 @@
 // Created by oelshora on 01/02/2026.
 //
 
+#include <iso646.h>
 #include <gtest/gtest.h>
 #include "matrix/Matrix.h"
 
@@ -69,4 +70,29 @@ TEST(TestInitListConstructor, CreatesValidInitConstructorWithShapeAndElements) {
 
 
     EXPECT_THROW({Matrix<int> m({ {1, 2}, {3} });}, std::invalid_argument);
+}
+
+TEST(MatrixCopyConstructor, CreatesDeepCopy)
+{
+    Matrix<int> original{ {1, 2}, {3, 4} };
+    Matrix<int> copy{ original };
+
+    EXPECT_EQ(copy.rows(), 2);
+    EXPECT_EQ(copy.cols(), 2);
+    EXPECT_NE(copy.data(), original.data());
+
+    copy(0, 0) = 99;
+
+    EXPECT_EQ(copy(0, 0), 99);
+    EXPECT_EQ(original(0, 0), 1);
+}
+
+TEST(MatrixCopyAssignment, AssignmentOperatorUpdatesExistingObject)
+{
+    Matrix<int> original{ {1,2}, {3, 4} };
+    Matrix<int> copy{ {6, 7}, {8, 9} };
+
+	copy = original;
+
+    EXPECT_EQ(copy.data(), original.data());
 }
