@@ -147,7 +147,7 @@ public:
     friend std::istream &operator>>(std::istream &is, Matrix<U> &m);
 
 private:
-    [[nodiscard]] size_type index(size_type r, size_type c) const noexcept;
+    [[nodiscard]] size_type index(size_type r, size_type cols) const noexcept;
 
     size_type m_rows{ 0 };
     size_type m_cols{ 0 };
@@ -295,17 +295,17 @@ typename Matrix<T>::const_pointer Matrix<T>::data() const noexcept {
 }
 
 template<typename T>
-typename Matrix<T>::reference Matrix<T>::operator()(size_type rows, size_type c) {
-    return m_data[index(rows, c)];
+typename Matrix<T>::reference Matrix<T>::operator()(size_type rows, size_type cols) {
+    return m_data[index(rows, cols)];
 }
 
 template<typename T>
-typename Matrix<T>::const_reference Matrix<T>::operator()(size_type r, size_type cols) const {
-    return m_data[index(r, cols)];
+typename Matrix<T>::const_reference Matrix<T>::operator()(size_type rows, size_type cols) const {
+    return m_data[index(rows, cols)];
 }
 
 template<typename T>
-typename Matrix<T>::size_type Matrix<T>::index(size_type r, size_type c) const noexcept {
-    return r * m_cols + c;
+typename Matrix<T>::size_type Matrix<T>::index(size_type rows, size_type cols) const noexcept {
+    return rows * m_cols + cols;
 }
 
